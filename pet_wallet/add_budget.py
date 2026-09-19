@@ -3,6 +3,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField, SubmitField
 from wtforms.validators import DataRequired, Length, NumberRange
 from . import app
+from . import db
 
 # TODO: Make my own range field with automatic validation!
 class AddBudgetForm(FlaskForm):
@@ -24,14 +25,17 @@ class AddBudgetForm(FlaskForm):
             NumberRange(min=0, message="Upper range must be positive!")])
     submit_field = SubmitField()
 
-@app.route("/add-user", methods=["GET", "POST"])
-def add_user():
-    add_budget_form = AddBudgetForm()
+@app.route("/add-budget", methods=["GET", "POST"])
+def add_budget():
+    form = AddBudgetForm()
     if request.method == "GET":
-        return render_template("FORM.html", form=add_budget_form)
+        return render_template("FORM.html", form=form)
     elif request.method == "POST" and  \
-        add_budget_form.validate() and \
-        add_budget_form.budget_low.data <= add_budget_form.budget_high.data:
+    form.validate() and \
+    form.budget_low.data <= form.budget_high.data:
+        user = db.User("default_user")
+        user.addBudget(form.budget_name.data, \
+                       form.budget_low.data, form.budget_high.data)
         return "Validated form!"
     return "Form did not validate!", 400
 

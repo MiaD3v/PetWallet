@@ -4,7 +4,7 @@ from os import urandom
 
 app = Flask(__name__)
 
-# FIXME: See if /dev/urandom is cryptographically secure or just use OpenSSL
+# FIXME: See if /dev/urandom is cryptographically secure or just use OpenSSL.
 app.config["SECRET_KEY"] = urandom(32)
 
 from . import root

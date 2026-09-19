@@ -4,6 +4,7 @@ from wtforms import StringField, IntegerField, SubmitField
 from wtforms.validators import DataRequired, Length, NumberRange
 from . import app
 from . import db
+from .request import Request
 
 # TODO: Make my own range field with automatic validation!
 class AddBudgetForm(FlaskForm):
@@ -27,15 +28,16 @@ class AddBudgetForm(FlaskForm):
 
 @app.route("/add-budget", methods=["GET", "POST"])
 def add_budget():
-    form = AddBudgetForm()
-    if request.method == "GET":
-        return render_template("FORM.html", form=form)
-    elif request.method == "POST" and  \
-    form.validate() and \
-    form.budget_low.data <= form.budget_high.data:
-        user = db.User("default_user")
-        user.addBudget(form.budget_name.data, \
-                       form.budget_low.data, form.budget_high.data)
-        return "Validated form!"
-    return "Form did not validate!", 400
+    with Request() as r:
+        form = AddBudgetForm()
+        if request.method == "GET":
+            return render_template("FORM.html", form=form)
+        elif request.method == "POST" and  \
+        form.validate() and \
+        form.budget_low.data <= form.budget_high.data:
+            user = db.User("default_user")
+            user.addBudget(form.budget_name.data, \
+                           form.budget_low.data, form.budget_high.data)
+            return "Validated form!"
+        return "Form did not validate!", 400
 

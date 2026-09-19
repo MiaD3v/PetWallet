@@ -1,8 +1,7 @@
 from flask import Flask, render_template
+from . import db
 
 app = Flask(__name__)
 
-@app.route("/")
-def root():
-    return render_template("index.html")
+from . import root
 

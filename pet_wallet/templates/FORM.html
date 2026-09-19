@@ -1,8 +1,8 @@
-<html> 
-<head> 
-<title>Pet Wallet</title> 
-<meta charset="UTF-8"> 
+<html>
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pet Wallet</title>
 <style>
     body {
         font-family: "Times New Roman", serif;
@@ -80,14 +80,20 @@
 
 <h1> Create New Budget Catorgey</h1>
 
-<form action="/action_page.php" method = "POST">
-  <label for="fname">Budget Name:</label><br>
-  <input type="text" id="fname" name="fname" value="" ><br>
-  <label for="lrange">Lower Range:</label><br>
-  <input type="text" id="lrange" name="lrange" value=""><br><br>
-  <label for="urange">Upper Range:</label><br>
-  <input type="text" id="urange" name="urange" value=""><br>
-  <input type="submit" value="Submit">
+<form action="{{ url_for(request.endpoint) }}" method="POST">
+    {{ form.hidden_tag() }}
+
+    {{ form.budget_name.label }}
+    {{ form.budget_name() }}
+
+    {{ form.budget_low.label }}
+    {{ form.budget_low() }}
+
+    {{ form.budget_high.label }}
+    {{ form.budget_high() }}
+
+    {{ form.submit_field.label }}
+    {{ form.submit_field() }}
 </form>
 
 </body> </html>

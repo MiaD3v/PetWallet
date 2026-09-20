@@ -1,4 +1,4 @@
-from flask import render_template, request
+from flask import render_template, request, redirect, url_for
 from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField, SubmitField
 from wtforms.validators import DataRequired, Length, NumberRange
@@ -38,6 +38,6 @@ def add_budget():
             user = db.User("default_user")
             user.addBudget(form.budget_name.data, \
                            form.budget_low.data, form.budget_high.data)
-            return "Validated form!"
+            return redirect(url_for('settings_page'))
         return "Form did not validate!", 400
 

@@ -37,9 +37,13 @@ class User:
         self.transactions = \
             cursor.execute(
                 "SELECT "                                                      +
-                "transaction_id, username, transaction_to,  transaction_name, "+
-                "transaction_desc, transaction_amount, transaction_datetime "  +
-                "FROM transactions;").fetchall()
+                "transaction_id, transactions.username, transaction_to,  transaction_name, "+
+                "transaction_desc, transaction_amount, transaction_datetime, " +
+                "budget_name " +
+                "FROM transactions " +
+                "INNER JOIN budgets ON transactions.budget_id = budgets.budget_id " +
+                "WHERE transactions.username = ?;", [self.username]).fetchall()
+        print(self.transactions)
 
     def addBudget(self, budget_name, low_end, high_end):
         cursor = request.sqlite3_cursor
@@ -65,19 +69,25 @@ class User:
             cursor.execute(
                 "SELECT "                                                      +
                 "transaction_id, username, transaction_to,  transaction_name, "+
-                "transaction_desc, transaction_amount, transaction_datetime "  +
-                "FROM transactions;").fetchall()
+                "transaction_desc, transaction_amount, transaction_datetime, " +
+                "budget_name " +
+                "FROM transactions " +
+                "INNER JOIN budgets ON transactions.budget_id = budgets.budget_id;").fetchall()
 
-    def addTransaction(self, to, name, desc, amount):
+    def addTransaction(self, to, name, desc, amount, budget_name):
         cursor = request.sqlite3_cursor
+
+        b_id = \
+            cursor.execute("SELECT budget_id FROM budgets WHERE budget_name=?;",
+                           [budget_name]).fetchall()[0][0]
 
         cursor.execute(
             "INSERT INTO " +
             "transactions(username, transaction_to, transaction_name, " +
                          "transaction_desc, transaction_amount, " +
-                         "transaction_datetime)" +
-            "VALUES(?, ?, ?, ?, ?, DATETIME('now'));",
-            [self.username, to, name, desc, amount])
+                         "transaction_datetime, budget_id)" +
+            "VALUES(?, ?, ?, ?, ?, DATETIME('now'), ?);",
+            [self.username, to, name, desc, amount, b_id])
 
         request.sqlite3_connection.commit()
 

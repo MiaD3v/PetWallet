@@ -81,21 +81,21 @@ td {
 <ul>
 
     <li>
-        <a href="index.html">
+        <a href="{{ url_for('root') }}">
             <img
-                src="logo.jpeg"
+                src="/static/logo.jpeg"
                 alt="Pet Wallet Logo"
                 class="logo"
-                style="width: 30px; height: 20px; object-fit: contain;"
+                style="width: 50px; height: 50px; object-fit: contain;"
             >
         </a>
     </li>
     <li>
-        <a href="Settings.html"  style="font-size: 20px;">Settings</a>
+        <a href="{{ url_for('settings_page') }}"  style="font-size: 20px;">Settings</a>
     </li>
 
     <li>
-        <a href="Transactions.html"  style="font-size: 20px;">Transactions</a>
+        <a href="{{ url_for('transactions_page') }}"  style="font-size: 20px;">Transactions</a>
     </li>
 
 </ul>
@@ -116,7 +116,7 @@ td {
     </tr>
     {%- endfor %}
 </table>
-<a href="FORM.html">
+<a href="{{ url_for('add_budget') }}">
 <button style="
     font-size: 20px;
     background-color: #0031AD;

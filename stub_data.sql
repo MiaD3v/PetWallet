@@ -2,7 +2,6 @@ CREATE TABLE users(
     username TEXT NOT NULL UNIQUE PRIMARY KEY
 );
 
--- TODO: use foreign keys
 CREATE TABLE budgets(
     budget_id INTEGER PRIMARY KEY NOT NULL,
     username    TEXT NOT NULL,
@@ -28,6 +27,8 @@ CREATE TABLE transactions(
     transaction_desc      TEXT NOT NULL,
     transaction_amount INTEGER NOT NULL,
     transaction_datetime  TEXT NOT NULL,
+    budget_id INTEGER NOT NULL,
+    FOREIGN KEY(budget_id) REFERENCES budgets(budget_id),
     FOREIGN KEY(username) REFERENCES users(username)
 );
 
@@ -36,11 +37,13 @@ INSERT INTO transactions(username,
                          transaction_name,
                          transaction_desc,
                          transaction_amount,
-                         transaction_datetime)
+                         transaction_datetime,
+                         budget_id)
     VALUES('default_user',
            'The Store',
            'Groceries',
            'I just bought some grocceries b/c I need to eat.',
            250000,
-           DATETIME('now'));
+           DATETIME('now'),
+           1);
 

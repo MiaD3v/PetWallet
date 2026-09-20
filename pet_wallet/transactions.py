@@ -27,6 +27,7 @@ class AddTransactionForm(FlaskForm):
         IntegerField("Transaction Amount (in cents)", \
         validators=[DataRequired(),                   \
         NumberRange(min=0, message="Please enter a positive amount!")])
+    budget_id = StringField("Budget Category", validators=[DataRequired()])
     submit_field = SubmitField("Submit")
 
 @app.route("/transactions", methods=["GET", "POST"])
@@ -36,18 +37,18 @@ def transactions_page():
 
         user = db.User('default_user')
 
-
         if request.method == "GET":
             transactions = []
 
             for t in user.transactions:
-                transactions.append((t[2], t[3], t[4], "$"+centsToString(t[5]), t[6]))
+                transactions.append((t[2], t[3], t[4], "$"+centsToString(t[5]), t[6], t[0], t[7]))
             return render_template("Transactions.html", form=form, transactions=transactions)
         elif request.method == "POST" and form.validate():
             user.addTransaction(form.transaction_to.data,
                                 form.transaction_name.data,
                                 form.transaction_desc.data,
-                                form.transaction_amount.data)
+                                form.transaction_amount.data,
+                                form.budget_id.data)
             return redirect(url_for("transactions_page"))
 
         return "Bad Request", 400

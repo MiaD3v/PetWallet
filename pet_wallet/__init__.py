@@ -11,4 +11,5 @@ from . import root
 from . import add_budget
 from . import settings
 from . import transactions
+from . import remove_transaction
 

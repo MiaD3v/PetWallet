@@ -97,18 +97,36 @@ td {
 }
 
 </style>
+    <script>
+        const openPopup = document.getElementById('openPopup');
+        const closePopup = document.getElementById('closePopup');
+        const popup = document.getElementById('popup');
+
+        window.addEventListener('click', (event) => {
+            if (event.target === popup) {
+                popup.style.display = 'none';
+            }
+        }
+        function remove_transaction(tid) {
+            console.log("hi")
+            fetch("/transactions/" + tid, {method: "DELETE"}).then(() => {window.location.reload()});
+        }
+    </script>
 
 </head> <body>
+<ul>
+
+  
 <ul>
 
   
     <li>
         <a href="{{ url_for('root') }}">
             <img
-                src="logo.jpeg"
+                src="/static/logo.jpeg"
                 alt="Pet Wallet Logo"
                 class="logo"
-                style="width: 30px; height: 20px; object-fit: contain;"
+                style="width: 50px; height: 50px; object-fit: contain;"
             >
         </a>
     </li>
@@ -121,10 +139,12 @@ td {
     </li>
 
 </ul>
- <button id="openPopup" style="
+
+</ul>
+ <button id="openPopup" onclick="popup.style.display = 'flex';" style="
     position: fixed;
     left: 0;
-    top: 70px;
+    top: 100px;
     padding: 7px;
     background-color: #0031AD;
     color: #fff;
@@ -146,58 +166,27 @@ td {
     {{ form.transaction_desc() }}
     {{ form.transaction_amount.label }}
     {{ form.transaction_amount() }}
+    {{ form.budget_id.label }}
+    {{ form.budget_id() }}
     {{ form.submit_field() }}
 
 </form>
 
             <button id="closePopup" style="margin-top: 120px; padding:
                                            15px 10px;  background-color: #002475; color: #fff;
-                                           border: none; border-radius 3px;">Close</button>
+                                           border: none; border-radius 3px;" onclick="popup.style.display = 'none';
+">Close</button>
         </div>
     </div>
-    <script>
-        const openPopup = document.getElementById('openPopup');
-        const closePopup = document.getElementById('closePopup');
-        const popup = document.getElementById('popup');
-
-        openPopup.addEventListener('click', () => {
-            popup.style.display = 'flex';
-        });
-
-        closePopup.addEventListener('click', () => {
-            popup.style.display = 'none';
-        });
-
-        window.addEventListener('click', (event) => {
-            if (event.target === popup) {
-                popup.style.display = 'none';
-            }
-             fetch("{{ url_for(delete_transaction) }}",
-    {
-        method: "DELETE",
-        body: JSON
-        .stringify
-        ({
-          userId: 1,
-          title: "Demo Todo Data",
-          completed: false,
-        }),
-        headers: {
-          "Content-type": "application/json",
-        },
-      })
-        .then((response) => response.json())
-        .then((json) => console.log(json));
-        });
-    </script>
 <h1>Input Transactions</h1>
        <table>
     <tr>
-        <th>Name</th>
         <th>To</th>
+        <th>Name</th>
         <th>Description</th>
         <th>Amount</th>
         <th>Time</th>
+        <th>Budget Category</th>
          <th></th>
     </tr>
      {%- for tr in transactions %}
@@ -207,7 +196,9 @@ td {
         <td>{{ tr[2] }}</td>
         <td>{{ tr[3] }}</td>
         <td>{{ tr[4] }}</td>
-        <td> <input type="submit" value="Remove"></td>
+        <td>{{ tr[6] }}</td>
+        <!--- FIXME: ... --->
+        <td> <button onclick="remove_transaction({{ tr[5] }})">Remove</button</td>
     </tr>
     {%- endfor %}
 </table>

@@ -1,3 +1,4 @@
+
 <html> 
 <head> 
 <title>Pet Wallet</title> 
@@ -5,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
     body {
-        font-family: "Times New Roman", serif;
+        font-family: Monaco, monospace;
         margin: 0;
         color: black;
         text-align: center;
@@ -22,7 +23,7 @@
         list-style-type: none;
         margin: 0;
         padding: 0;
-        background-color: #333333;
+        background-color: #0031AD;
         display: flex;
         align-items: center;
     }
@@ -43,18 +44,14 @@
     }
 
     ul li a:hover {
-        background-color: #111111;
+        background-color: #002475;
     }
 
     h1 {
         font-size: 40px;
         margin-top: 20px;
         margin-bottom: 10px;
-    }
-
-    h2 {
-        font-size: 30px;
-        margin-top: 0;
+        color: #002475;
     }
 .popup {
             display: none;
@@ -67,15 +64,38 @@
              z-index: 100;
         }
         .popup-content {
-            background: #fff;
+            background: white;
             padding: 20px;
             border-radius: 5px;
             text-align: center;
+             color: #002475;
             width: 60%; height: 50%;
         }
         .popup:target {
             display: flex;
         }
+        table {
+    margin: 30px auto;
+    border-collapse: collapse;
+    width: 70%;
+    font-size: 25px;
+}
+
+th, td {
+    border: 2px solid #002475;
+    padding: 15px;
+    text-align: center;
+}
+
+th {
+    background-color: #002475;
+    color: white;
+}
+
+td {
+    background-color: white;
+}
+
 </style>
 
 </head> <body>
@@ -85,8 +105,8 @@
     <li>
         <a href="{{ url_for('root') }}">
             <img
-                src="https://www.webkinz.com/assets/img/classic_logo.png"
-                alt="Webkinz Logo"
+                src="logo.jpeg"
+                alt="Pet Wallet Logo"
                 class="logo"
                 style="width: 30px; height: 20px; object-fit: contain;"
             >
@@ -101,7 +121,16 @@
     </li>
 
 </ul>
- <button id="openPopup" style="padding: 10px 20px; color: #fff; border: none; border-radius: 5px;">New </button>
+ <button id="openPopup" style="
+    position: fixed;
+    left: 0;
+    top: 70px;
+    padding: 7px;
+    background-color: #0031AD;
+    color: #fff;
+">
+    New +
+</button>
     <div id="popup" class="popup">
         <div class="popup-content">
             <h2>Stats</h2>
@@ -122,7 +151,7 @@
 </form>
 
             <button id="closePopup" style="margin-top: 120px; padding:
-                                           15px 10px;
+                                           15px 10px;  background-color: #002475; color: #fff;
                                            border: none; border-radius 3px;">Close</button>
         </div>
     </div>
@@ -143,21 +172,44 @@
             if (event.target === popup) {
                 popup.style.display = 'none';
             }
+             fetch("{{ url_for(delete_transaction) }}",
+    {
+        method: "DELETE",
+        body: JSON
+        .stringify
+        ({
+          userId: 1,
+          title: "Demo Todo Data",
+          completed: false,
+        }),
+        headers: {
+          "Content-type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((json) => console.log(json));
         });
     </script>
 <h1>Input Transactions</h1>
-<ol>
-    {%- for tr in transactions %}
-      <li>
-          {{ tr[0] }}
-          {{ tr[1] }}
-          {{ tr[2] }}
-          {{ tr[3] }}
-          {{ tr[4] }}
-          TRANSACTION  <input type="submit" value="Remove">
-      </li>
-    {% endfor %}
-</ol>
+       <table>
+    <tr>
+        <th>Name</th>
+        <th>To</th>
+        <th>Description</th>
+        <th>Amount</th>
+        <th>Time</th>
+         <th></th>
+    </tr>
+     {%- for tr in transactions %}
+    <tr>
+        <td>{{ tr[0] }}</td>
+        <td>{{ tr[1] }}</td>
+        <td>{{ tr[2] }}</td>
+        <td>{{ tr[3] }}</td>
+        <td>{{ tr[4] }}</td>
+        <td> <input type="submit" value="Remove"></td>
+    </tr>
+    {%- endfor %}
+</table>
 
 </body> </html>
-

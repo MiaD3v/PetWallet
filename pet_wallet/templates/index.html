@@ -108,7 +108,7 @@
 
   
     <li>
-        <a href="index.html">
+        <a href="{{ url_for('root') }}">
             <img
                 src="https://www.webkinz.com/assets/img/classic_logo.png"
                 alt="Webkinz Logo"
@@ -118,11 +118,11 @@
         </a>
     </li>
     <li>
-        <a href="Settings.html"  style="font-size: 20px;">Settings</a>
+        <a href="{{ url_for('settings_page') }}"  style="font-size: 20px;">Settings</a>
     </li>
 
     <li>
-        <a href="Transactions.html"  style="font-size: 20px;">Transactions</a>
+        <a href="{{ url_for('transactions_page') }}"  style="font-size: 20px;">Transactions</a>
     </li>
 
 </ul>

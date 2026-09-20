@@ -2,6 +2,7 @@ from flask import render_template
 from . import app
 from . import db
 from .request import Request
+from .cents_to_string import centsToString
 
 @app.route("/settings")
 def settings_page():
@@ -13,8 +14,4 @@ def settings_page():
             budgets.append((budget[2], centsToString(budget[3]), centsToString(budget[4])))
 
         return render_template("Settings.html", budgets=budgets)
-
-def centsToString(c):
-    return f"{c//100}.{c%100:02}"
-
 

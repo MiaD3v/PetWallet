@@ -54,6 +54,20 @@ class User:
                              low_end,
                              high_end))
 
+    def removeTransaction(self, tid):
+        cursor     = request.sqlite3_cursor
+        connection = request.sqlite3_connection
+
+        cursor.execute("DELETE FROM transactions WHERE transaction_id = ?;",
+                       [tid])
+        connection.commit()
+        self.transactions = \
+            cursor.execute(
+                "SELECT "                                                      +
+                "transaction_id, username, transaction_to,  transaction_name, "+
+                "transaction_desc, transaction_amount, transaction_datetime "  +
+                "FROM transactions;").fetchall()
+
     def addTransaction(self, to, name, desc, amount):
         cursor = request.sqlite3_cursor
 
@@ -67,9 +81,10 @@ class User:
 
         request.sqlite3_connection.commit()
 
-        return cursor.execute(
-            "SELECT transaction_id, username, transaction_to, transaction_name, " +
-                "transaction_desc, transaction_amount, transaction_datetime " +
-                "FROM transactions WHERE transaction_id = ?;",
-            transaction_id).fetchall()[0]
+        self.transactions.append(
+            cursor.execute(
+                "SELECT transaction_id, username, transaction_to, transaction_name, " +
+                "transaction_desc, transaction_amount transaction_datetime FROM " +
+                "transactions where transaction_id = ?;",
+                [cursor.lastrowid]).fetchall()[0])
 

@@ -83,7 +83,7 @@
 
   
     <li>
-        <a href="index.html">
+        <a href="{{ url_for('root') }}">
             <img
                 src="https://www.webkinz.com/assets/img/classic_logo.png"
                 alt="Webkinz Logo"
@@ -93,11 +93,11 @@
         </a>
     </li>
     <li>
-        <a href="Settings.html"  style="font-size: 20px;">Settings</a>
+        <a href="{{ url_for('settings_page') }}"  style="font-size: 20px;">Settings</a>
     </li>
 
     <li>
-        <a href="Transactions.html"  style="font-size: 20px;">Transactions</a>
+        <a href="{{ url_for('transactions_page') }}"  style="font-size: 20px;">Transactions</a>
     </li>
 
 </ul>
@@ -105,17 +105,20 @@
     <div id="popup" class="popup">
         <div class="popup-content">
             <h2>Stats</h2>
-            
-<form action="/action_page.php" method = "POST">
-  <label for="To">To:</label><br>
-  <input type="text" id="To" name="To" value="" ><br>
-  <label for="Name">Name:</label><br>
-  <input type="text" id="Name" name="Name" value=""><br><br>
-  <label for="Description">Description:</label><br>
-  <input type="text" id="Description" name="Description" value=""><br>
-  <label for="Amount">Amount:</label><br>
-  <input type="text" id="Amount" name="Amount" value=""><br>
-  <input type="submit" value="Submit">
+
+<form action="{{ url_for(request.endpoint) }}" method = "POST">
+    {{ form.hidden_tag() }}
+
+    {{ form.transaction_to.label }}
+    {{ form.transaction_to() }}
+    {{ form.transaction_name.label }}
+    {{ form.transaction_name() }}
+    {{ form.transaction_desc.label }}
+    {{ form.transaction_desc() }}
+    {{ form.transaction_amount.label }}
+    {{ form.transaction_amount() }}
+    {{ form.submit_field() }}
+
 </form>
 
             <button id="closePopup" style="margin-top: 120px; padding:
@@ -144,8 +147,16 @@
     </script>
 <h1>Input Transactions</h1>
 <ol>
-  <li>TRANSACTION  <input type="submit" value="Remove">  <input type="submit" value="Edit">
-  </li>
+    {%- for tr in transactions %}
+      <li>
+          {{ tr[0] }}
+          {{ tr[1] }}
+          {{ tr[2] }}
+          {{ tr[3] }}
+          {{ tr[4] }}
+          TRANSACTION  <input type="submit" value="Remove">
+      </li>
+    {% endfor %}
 </ol>
 
 </body> </html>

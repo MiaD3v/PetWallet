@@ -81,7 +81,7 @@ td {
 <ul>
 
     <li>
-        <a href="index.html">
+        <a href="{{ url_for('root') }}">
             <img
                 src="logo.jpeg"
                 alt="Pet Wallet Logo"
@@ -91,11 +91,11 @@ td {
         </a>
     </li>
     <li>
-        <a href="Settings.html"  style="font-size: 20px;">Settings</a>
+        <a href="{{ url_for('settings_page') }}"  style="font-size: 20px;">Settings</a>
     </li>
 
     <li>
-        <a href="Transactions.html"  style="font-size: 20px;">Transactions</a>
+        <a href="{{ url_for('transactions_page') }}"  style="font-size: 20px;">Transactions</a>
     </li>
 
 </ul>

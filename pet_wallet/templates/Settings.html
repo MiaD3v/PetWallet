@@ -1,13 +1,13 @@
-<html>
-<head>
-<meta charset="UTF-8">
+<html> 
+<head> 
+<title>Pet Wallet</title> 
+<meta charset="UTF-8"> 
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pet Wallet</title>
 <style>
     body {
         font-family: Monaco, monospace;
         margin: 0;
-        color: #002475;
+        color: black;
         text-align: center;
         background-color: white;
         height: 100vh;
@@ -35,7 +35,7 @@
 
     ul li a {
         display: block;
-        color: white;
+        color: F2F7FF;
         text-align: center;
         padding: 25px 25px;
         text-decoration: none;
@@ -47,75 +47,39 @@
     }
 
     h1 {
-        font-size: 40px;
+        font-size: 60px;
         margin-top: 20px;
+        color: #002475;
         margin-bottom: 10px;
     }
-    .budget-form {
-    max-width: 500px;
-    margin: 40px auto;
-    padding: 30px;
+    table {
+    margin: 30px auto;
+    border-collapse: collapse;
+    width: 70%;
+    font-size: 25px;
 }
 
-.form-row {
-    display: grid;
-    grid-template-columns: 140px 1fr;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 20px;
+th, td {
+    border: 2px solid #002475;
+    padding: 15px;
+    text-align: center;
 }
 
-.form-row label {
-    font-weight: 600;
-    color: #333;
+th {
+    background-color: #002475;
+    color: white;
 }
 
-.form-row input[type="Name"],
-.form-row input[type="Upper End"],
-.form-row input[type="Lower End"] {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 10px 12px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 15px;
-    transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.form-row input:focus {
-    outline: none;
-    border-color: #4a90e2;
-    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.15);
-}
-
-.form-row span {
-    display: block;
-}
-
-.form-row input[type="submit"],
-.form-row button {
-    padding: 10px 20px;
-    background: #4a90e2;
-    color: #002475;
-    border: none;
-    border-radius: 6px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.form-row input[type="submit"]:hover,
-.form-row button:hover {
-    background: #357abd;
+td {
+    background-color: white;
 }
 
 </style>
 
 </head> <body>
+
 <ul>
 
-  
     <li>
         <a href="{{ url_for('root') }}">
             <img
@@ -127,7 +91,7 @@
         </a>
     </li>
     <li>
-        <a href="Settings.html"  style="font-size: 20px;">Settings</a>
+        <a href="{{ url_for('settings_page') }}"  style="font-size: 20px;">Settings</a>
     </li>
 
     <li>
@@ -136,30 +100,34 @@
 
 </ul>
 
-<h1> Create New Budget Category</h1>
+<h1>Current Budgets</h1>
+    <table>
+    <tr>
+        <th>Name</th>
+        <th>Upper End</th>
+        <th>Lower End</th>
+    </tr>
 
-<form action="{{ url_for(request.endpoint) }}" method="POST" class="budget-form">
-    {{ form.hidden_tag() }}
-
-    <div class="form-row">
-        {{ form.budget_name.label }}
-        {{ form.budget_name() }}
-    </div>
-
-    <div class="form-row">
-        {{ form.budget_low.label }}
-        {{ form.budget_low() }}
-    </div>
-
-    <div class="form-row">
-        {{ form.budget_high.label }}
-        {{ form.budget_high() }}
-    </div>
-
-    <div class="form-row">
-        <span></span>
-        {{ form.submit_field() }}
-    </div>
-</form>
-
+    {%- for budget in budgets %}
+    <tr>
+        <td>{{ budget[0]|safe }}</td>
+        <td>{{ budget[1]|safe }}</td>
+        <td>{{ budget[2]|safe }}</td>
+    </tr>
+    {%- endfor %}
+</table>
+<a href="{{ url_for('add_budget') }}">
+<button style="
+    font-size: 20px;
+    background-color: #0031AD;
+    color: white;
+    width: 200px;
+    height: 100px;
+    margin-top: auto;
+    margin-right: auto;
+    margin-left: auto;
+"> Submit New Budget
+</button>
+</a>
 </body> </html>
+

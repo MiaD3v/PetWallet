@@ -56,7 +56,26 @@
         font-size: 30px;
         margin-top: 0;
     }
-
+.popup {
+            display: none;
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+             z-index: 100;
+        }
+        .popup-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            width: 60%; height: 50%;
+        }
+        .popup:target {
+            display: flex;
+        }
 </style>
 
 </head> <body>
@@ -82,8 +101,52 @@
     </li>
 
 </ul>
+ <button id="openPopup" style="padding: 10px 20px; color: #fff; border: none; border-radius: 5px;">New </button>
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <h2>Stats</h2>
+            
+<form action="/action_page.php" method = "POST">
+  <label for="To">To:</label><br>
+  <input type="text" id="To" name="To" value="" ><br>
+  <label for="Name">Name:</label><br>
+  <input type="text" id="Name" name="Name" value=""><br><br>
+  <label for="Description">Description:</label><br>
+  <input type="text" id="Description" name="Description" value=""><br>
+  <label for="Amount">Amount:</label><br>
+  <input type="text" id="Amount" name="Amount" value=""><br>
+  <input type="submit" value="Submit">
+</form>
 
+            <button id="closePopup" style="margin-top: 120px; padding:
+                                           15px 10px;
+                                           border: none; border-radius 3px;">Close</button>
+        </div>
+    </div>
+    <script>
+        const openPopup = document.getElementById('openPopup');
+        const closePopup = document.getElementById('closePopup');
+        const popup = document.getElementById('popup');
+
+        openPopup.addEventListener('click', () => {
+            popup.style.display = 'flex';
+        });
+
+        closePopup.addEventListener('click', () => {
+            popup.style.display = 'none';
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target === popup) {
+                popup.style.display = 'none';
+            }
+        });
+    </script>
 <h1>Input Transactions</h1>
-
+<ol>
+  <li>TRANSACTION  <input type="submit" value="Remove">  <input type="submit" value="Edit">
+  </li>
+</ol>
 
 </body> </html>
+

@@ -48,8 +48,11 @@ class User:
             "VALUES(?, ?, ?, ?)", \
             [self.username, budget_name, low_end, high_end])
         request.sqlite3_connection.commit()
-        print(cursor.lastrowid)
-        self.budgets.append((cursor.lastrowid, self.username, budget_name, low_end, high_end))
+        self.budgets.append((cursor.lastrowid,
+                             self.username,
+                             budget_name,
+                             low_end,
+                             high_end))
 
     def addTransaction(self, to, name, desc, amount):
         cursor = request.sqlite3_cursor
@@ -63,4 +66,10 @@ class User:
             [self.username, to, name, desc, amount])
 
         request.sqlite3_connection.commit()
+
+        return cursor.execute(
+            "SELECT transaction_id, username, transaction_to, transaction_name, " +
+                "transaction_desc, transaction_amount, transaction_datetime " +
+                "FROM transactions WHERE transaction_id = ?;",
+            transaction_id).fetchall()[0]
 

@@ -9,4 +9,5 @@ app.config["SECRET_KEY"] = urandom(32)
 
 from . import root
 from . import add_budget
+from . import settings
 

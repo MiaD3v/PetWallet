@@ -198,7 +198,7 @@ td {
         <td>{{ tr[4] }}</td>
         <td>{{ tr[6] }}</td>
         <!--- FIXME: ... --->
-        <td> <button onclick="remove_transaction({{ tr[5] }})">Remove</button</td>
+        <td> <button onclick="fetch('/transactions/' + {{tr[5]}}, {method: 'DELETE'}).then(() => {window.location.reload()})">Remove</button</td>
     </tr>
     {%- endfor %}
 </table>

@@ -98,3 +98,35 @@ class User:
                 "transactions where transaction_id = ?;",
                 [cursor.lastrowid]).fetchall()[0])
 
+    def determineCreatureHappiness(self):
+        cursor = request.sqlite3_cursor
+
+        # -1 is < 'low'
+        # 0 is between 'low' and 'high'
+        # 1 is > 'high'
+        budget_statuses = []
+
+        for budget in self.budgets:
+            transactions = cursor.execute("SELECT * FROM transactions WHERE budget_id = ?", [budget[0]]).fetchall()
+            total = 0
+            for tr in transactions:
+                total += int(tr[5])
+            lo = budget[3]
+            hi = budget[4]
+            if total < lo:
+                budget_statuses.append(-1)
+            elif total > hi:
+                budget_statuses.append(1)
+            else:
+                budget_statuses.append(0)
+
+        average = sum(budget_statuses) / len(budget_statuses)
+
+        if average < -0.2:
+            return "happy"
+        if average > 0.2:
+            return "sad"
+        return "neutral"
+
+
+
